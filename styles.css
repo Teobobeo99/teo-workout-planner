@@ -1,0 +1,186 @@
+/* Teo's Workout Planner: mobile-first styles.
+   Big tap targets (at least 56px), light + dark mode automatically. */
+
+:root {
+  --bg: #f4f6f8;
+  --card: #ffffff;
+  --text: #1b1f24;
+  --muted: #6b7480;
+  --line: #d9dee4;
+  --primary: #1d3557;
+  --primary-text: #ffffff;
+  --accent: #2a9d8f;
+  --danger: #c0392b;
+  --radius: 16px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1418;
+    --card: #1a2128;
+    --text: #eef1f4;
+    --muted: #98a2ad;
+    --line: #2c353e;
+    --primary: #4c7bd1;
+    --primary-text: #ffffff;
+    --accent: #3cc2b1;
+    --danger: #ff6b5b;
+  }
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 18px;
+  /* keep content away from the iPhone notch / home bar */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+/* On desktop the app stays a centered column so it looks fine on a laptop too */
+#app { max-width: 640px; margin: 0 auto; padding: 12px 16px 40px; }
+
+h1 { font-size: 26px; margin: 8px 0 16px; }
+h2 { font-size: 24px; margin: 4px 0; }
+h3 { font-size: 18px; margin: 20px 0 8px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+p { margin: 6px 0; }
+.muted { color: var(--muted); font-size: 15px; }
+
+/* ---------- Buttons ---------- */
+button, .btn {
+  font: inherit;
+  min-height: 56px;
+  padding: 0 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+}
+button:active { transform: scale(.97); }
+button:disabled { opacity: .4; }
+button.primary { background: var(--primary); color: var(--primary-text); border-color: transparent; font-weight: 700; }
+button.danger { color: var(--danger); }
+button.big { width: 100%; min-height: 72px; font-size: 22px; margin-top: 16px; }
+button.small { min-height: 44px; padding: 0 12px; font-size: 16px; }
+button.block { width: 100%; margin-top: 10px; }
+
+/* ---------- Top bar ---------- */
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.topbar .title { font-weight: 700; font-size: 19px; text-align: center; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.day-card { border-left: 10px solid var(--day-color, var(--primary)); }
+.day-card.today { outline: 3px solid var(--accent); }
+.day-card .row { display: flex; gap: 10px; margin-top: 12px; }
+.day-card .row button { flex: 1; }
+.badge { background: var(--accent); color: #fff; border-radius: 99px; font-size: 13px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+.banner { background: var(--accent); color: #fff; border: 0; width: 100%; margin-bottom: 12px; font-weight: 700; }
+
+/* ---------- Forms ---------- */
+input[type=text], input[type=search], input[type=number], select, textarea {
+  font: inherit; width: 100%; min-height: 52px; padding: 10px 14px;
+  border: 1px solid var(--line); border-radius: 12px; background: var(--bg); color: var(--text);
+}
+textarea { min-height: 96px; resize: vertical; }
+label { display: block; font-size: 15px; color: var(--muted); margin: 12px 0 4px; }
+
+.swatches { display: flex; gap: 10px; flex-wrap: wrap; }
+.swatch { width: 48px; min-height: 48px; height: 48px; padding: 0; border-radius: 50%; border: 3px solid transparent; }
+.swatch.selected { border-color: var(--text); }
+.swatch.rainbow { background: conic-gradient(#f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00); }
+
+/* Custom color picker: a color wheel, a brightness slider and R / G / B boxes */
+.color-panel { margin-top: 14px; display: flex; flex-direction: column; align-items: center; }
+.wheel-wrap { position: relative; width: 220px; height: 220px; border-radius: 50%; touch-action: none; cursor: crosshair; user-select: none; -webkit-user-select: none; }
+.wheel { width: 100%; height: 100%; border-radius: 50%; display: block; }
+.wheel-dark { position: absolute; inset: 0; border-radius: 50%; background: #000; opacity: 0; pointer-events: none; }
+.wheel-marker { position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; border: 3px solid #fff; border-radius: 50%; box-shadow: 0 0 0 2px #0008; pointer-events: none; }
+.color-panel label { align-self: flex-start; }
+.color-panel input[type=range] { width: 100%; height: 36px; }
+.rgb-row { display: flex; gap: 10px; width: 100%; align-items: flex-end; }
+.rgb-row > div { flex: 1; min-width: 0; }
+.rgb-row input { text-align: center; padding: 10px 4px; }
+.rgb-row .color-preview { flex: 0 0 56px; height: 52px; border-radius: 12px; border: 1px solid var(--line); }
+
+/* ---------- Day editor rows ---------- */
+.ex-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ex-row .ex-head { flex: 1 1 100%; display: flex; align-items: center; gap: 8px; }
+.ex-row .name { flex: 1; min-width: 0; font-weight: 600; }
+.stepper { display: inline-flex; align-items: center; gap: 6px; }
+.stepper .val { min-width: 60px; text-align: center; font-weight: 700; }
+.spacer { flex: 1; }
+
+/* ---------- Picker ---------- */
+.pick-row { display: flex; gap: 8px; margin-bottom: 8px; }
+.pick-item { flex: 1; min-width: 0; justify-content: flex-start; text-align: left; flex-direction: column; align-items: flex-start; gap: 0; padding: 10px 16px; }
+.pick-view { flex-shrink: 0; min-width: 76px; }
+
+/* ---------- Exercise pictures screen ---------- */
+/* A column that is at least as tall as the screen: the two pictures share the space, Close sits at the bottom. */
+.viewer { display: flex; flex-direction: column; gap: 10px; min-height: calc(100vh - 60px); min-height: calc(100dvh - 60px); }
+.viewer h2 { font-size: 20px; text-align: center; margin: 0; }
+.viewer img { flex: 1 1 0; min-height: 0; width: 100%; object-fit: contain; background: #fff; border-radius: var(--radius); }
+.viewer button { flex-shrink: 0; margin-top: 0; }
+
+/* ---------- Workout screen ---------- */
+.dots { display: flex; gap: 6px; justify-content: center; margin: 4px 0 12px; }
+.dot { width: 12px; height: 12px; border-radius: 50%; background: var(--line); }
+.dot.done { background: var(--accent); }
+.dot.current { background: var(--primary); transform: scale(1.4); }
+
+.set-label { font-size: 22px; font-weight: 700; color: var(--accent); }
+.hint { color: var(--muted); font-size: 16px; }
+
+.num-field { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+.num-field input {
+  flex: 1; min-width: 0; height: 84px; text-align: center; font-size: 44px; font-weight: 700;
+  border: 2px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text);
+}
+.num-field button { width: 76px; height: 76px; font-size: 32px; padding: 0; flex-shrink: 0; }
+
+.unit-toggle { display: flex; gap: 8px; margin-top: 12px; }
+.unit-toggle button { flex: 1; min-height: 48px; }
+.unit-toggle button.selected { background: var(--primary); color: var(--primary-text); }
+
+.logged { margin-top: 14px; font-size: 16px; }
+.logged span { display: inline-block; background: var(--bg); border: 1px solid var(--line); border-radius: 99px; padding: 4px 12px; margin: 0 6px 6px 0; }
+
+.nav-row { display: flex; gap: 10px; }
+.nav-row button { flex: 1; }
+
+/* ---------- Progress screen ---------- */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { min-height: 48px; padding: 0 16px; font-size: 16px; border-radius: 99px; }
+.chip.selected { background: var(--primary); color: var(--primary-text); border-color: transparent; font-weight: 700; }
+.chip-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+
+.chart { width: 100%; height: auto; display: block; margin-top: 8px; }
+.chart .grid { stroke: var(--line); stroke-width: 1; }
+.chart .tick { fill: var(--muted); font-size: 12px; }
+.chart .axis-label { fill: var(--muted); font-size: 12px; }
+.chart .pt { stroke: var(--card); stroke-width: 2; }
+.chart .pt.active { stroke: var(--text); stroke-width: 3; }
+.chart { touch-action: pan-y; user-select: none; -webkit-user-select: none; } /* up/down still scrolls the page; sideways moves along the graph */
+.chart .tip-box { fill: var(--text); }
+.chart .tip-text { fill: var(--card); font-size: 12px; }
+.chart .tip-text.strong { font-weight: 700; }
+.legend { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
+.legend .bar { flex: 1; height: 10px; border-radius: 99px; }
+
+/* ---------- Toast (small message at the bottom) ---------- */
+.toast {
+  position: fixed; left: 50%; bottom: 30px; transform: translateX(-50%);
+  background: #000c; color: #fff; padding: 12px 20px; border-radius: 99px; z-index: 10; max-width: 90%;
+}
+[hidden] { display: none !important; }
